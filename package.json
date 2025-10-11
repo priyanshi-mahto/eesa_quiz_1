@@ -1,4 +1,13 @@
 {
+  "name": "project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "start:client": "cd client && npm start"
+  },
   "dependencies": {
     "react-toastify": "^11.0.5"
   }
