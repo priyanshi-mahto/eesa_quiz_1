@@ -2,33 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import "./PageThree.css";
+import { toast } from 'react-toastify';
+import Loader from "../Loader";
 
-// const port = "https://signal-cipher.vercel.app";
 const port = "http://localhost:5000";
 
 function LastQuestion() {
   const [question, setQuestion] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
-  const [isVerified, setIsVerified] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [showError, setShowError] = useState(null);
-
-  const { user, isAuthenticated, isLoading } = useAuth0();
   const [userInfo, setUserInfo] = useState(null);
   const [isSolved5, setIsSolved5] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
-      if (!isLoading && !isAuthenticated) {
-        alert("Please log in to access the quiz.");
-        navigate("/"); // redirect to authentication page
-      }
-    }, [isAuthenticated, isLoading, navigate]);
+    if (!isLoading && !isAuthenticated) {
+      toast.error("Please log in to access the quiz.");
+      navigate("/");
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
-  // ✅ 1. Access control: user must have solved 2,3,4 before accessing Q5
   const checkAccess = async () => {
     if (isAuthenticated && user?.email) {
       try {
@@ -37,12 +34,11 @@ function LastQuestion() {
         });
         const solved = response.data.Qns_Solved || [];
 
-        // ✅ required questions before Q5
         const required = [2, 3, 4];
         const hasAll = required.every((q) => solved.includes(q));
 
         if (!hasAll) {
-          alert("Please solve Questions 2, 3, and 4 before accessing this page.");
+          toast.error("Please solve Questions 2, 3, and 4 before accessing this page.");
           navigate("/page-two");
         }
       } catch (err) {
@@ -66,22 +62,23 @@ function LastQuestion() {
       setQuestion(data);
     } catch (err) {
       console.error("Error fetching question:", err);
+      toast.error("Failed to load question");
     }
   };
 
   const handleVerify = async () => {
-    if (!selectedOption) {
-      setShowError("Please enter an answer");
+    if (!selectedOption.trim()) {
+      toast.warning("Please enter an answer");
       return;
     }
 
     if (!isAuthenticated || !user?.email) {
-      setShowError("User authentication failed. Please log in.");
+      toast.error("User authentication failed. Please log in.");
       return;
     }
 
-    // ✅ Clean answer
     let tutu = selectedOption.replace(/\s+/g, "").toLowerCase();
+    setIsVerifying(true);
 
     try {
       const response = await fetch(`${port}/validateAnswer`, {
@@ -98,16 +95,17 @@ function LastQuestion() {
 
       if (data.isCorrect) {
         setIsCorrect(true);
-        setIsVerified(true);
-        setShowError(null);
+        toast.success("✅ Correct Answer!");
         await LoadUser();
       } else {
         setIsCorrect(false);
-        setShowError("Incorrect answer! Please try again.");
+        toast.error("Incorrect answer! Please try again.");
       }
     } catch (err) {
-      setShowError("There was an error. Please try again.");
+      toast.error("There was an error. Please try again.");
       console.error("Error checking answer:", err);
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -126,10 +124,9 @@ function LastQuestion() {
     }
   };
 
-  // ✅ 2. When page loads → check access, load Q5, and user info
   useEffect(() => {
     if (!isLoading && isAuthenticated && user?.email) {
-      checkAccess(); // 🔒 ensures 2,3,4 solved
+      checkAccess();
       fetchQuestions(user.email, "5");
       LoadUser();
     }
@@ -139,68 +136,88 @@ function LastQuestion() {
     await LoadUser();
     if (isSolved5) {
       setShowSuccess(true);
+      toast.success("🎉 Congratulations! You've completed SignalCipher!");
     } else {
-      setShowError("Please verify your answer correctly before submitting.");
+      toast.warning("Please verify your answer correctly before submitting.");
     }
   };
 
   const handlePrevious = () => navigate(-1);
 
-  if (!question) return <div className="loading">Loading...</div>;
+  if (!question) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+        <Loader label="Loading question..." />
+      </div>
+    );
+  }
 
   return (
-    <div className="question-container">
+    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
       {!showSuccess ? (
         <>
-          <div className="question-box">
-            <div className="question-header">
-              <div style={{ margin: "auto" }}>
-                <h1 className="question-title">
-                  <span style={{ color: "orange" }}>5.</span> {question.Q_Title}
-                </h1>
-              </div>
-              <span className={isSolved5 ? "solved" : "unsolved"}>
-                {isSolved5 ? "Solved!" : "Unsolved"}
+          <div className="card animate-scale-in">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold">
+                <span className="text-accent">5.</span> {question.Q_Title}
+              </h1>
+              <span className={isSolved5 ? "badge-success" : "badge-warning"}>
+                {isSolved5 ? "✓ Solved" : "Unsolved"}
               </span>
             </div>
-            <p className="para1">{question.Q_Des}</p>
+            
+            <p className="text-text-secondary text-base sm:text-lg leading-relaxed mb-8">
+              {question.Q_Des}
+            </p>
 
-            <div className="input-verify-container">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 placeholder="Your answer"
                 onChange={(e) => setSelectedOption(e.target.value)}
-                className="answer-input"
+                onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
+                className="input-field flex-1"
                 aria-label="Your answer"
+                disabled={isVerifying}
               />
-              <button onClick={handleVerify} className="verify-button">
-                Verify
+              <button 
+                onClick={handleVerify} 
+                className="btn-primary sm:w-auto"
+                disabled={isVerifying}
+              >
+                {isVerifying ? <Loader label="" /> : 'Verify'}
               </button>
             </div>
-            {isCorrect && <p className="correct-message">✅ Correct Answer</p>}
-            {showError && <p className="error-message">{showError}</p>}
           </div>
-          <div className="button-container">
-            <button onClick={handlePrevious} className="previous-button">
-              Previous
+          
+          <div className="flex justify-between gap-4 mt-6">
+            <button onClick={handlePrevious} className="btn-secondary">
+              ← Previous
             </button>
-            <button onClick={handleSubmit} className="submit-button">
+            <button onClick={handleSubmit} className="btn-primary">
               Submit
             </button>
           </div>
         </>
       ) : (
-        <div className="success-message">
-          <h1>🎉 You have successfully completed SignalCipher—well done! 🎉</h1>
-          <p>
-            Thank you for participating and showcasing your skills. EESA wishes
-            you a <span className="highlight">Happy New Year!</span>
-          </p>
-          <p>
-            Stay tuned for further updates and information about prizes. We will
-            be back soon with more exciting news! 😉
-          </p>
-          <p>Until next time, keep exploring and innovating...</p>
+        <div className="card text-center animate-scale-in p-8 sm:p-12">
+          <div className="text-6xl mb-6">🎉</div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gradient mb-6">
+            Congratulations!
+          </h1>
+          <div className="space-y-4 text-text-secondary text-base sm:text-lg">
+            <p>
+              You have successfully completed <span className="font-bold text-primary">SignalCipher</span>—well done!
+            </p>
+            <p>
+              Thank you for participating and showcasing your skills. EESA wishes you a{" "}
+              <span className="font-semibold text-accent">Happy New Year!</span>
+            </p>
+            <p>
+              Stay tuned for further updates and information about prizes. We will be back soon with more exciting news! 😉
+            </p>
+            <p className="text-sm italic">Until next time, keep exploring and innovating...</p>
+          </div>
         </div>
       )}
     </div>

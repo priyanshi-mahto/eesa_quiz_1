@@ -1,21 +1,40 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import "./Navbar.css";
 
 const Navbar = () => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   return (
-    <nav className="navbar">
-      <a href="/" style={{textDecoration: 'none'}}> <h4>SignalCipher: The Hidden Wish</h4></a>
-      <div className="auth-buttons">
-        {!isAuthenticated ? (
-          <button onClick={() => loginWithRedirect()}>Log In</button>
-        ) : (
-          <button onClick={() => logout({ returnTo: window.location.origin })}>
-            Log Out
-          </button>
-        )}
+    <nav className="sticky top-0 z-50 bg-surface border-b border-border backdrop-blur-sm bg-opacity-95">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <a 
+            href="/" 
+            className="flex items-center space-x-2 group"
+          >
+            <h4 className="text-xl sm:text-2xl font-bold text-gradient">
+              SignalCipher: The Hidden Wish
+            </h4>
+          </a>
+          
+          <div className="flex items-center space-x-4">
+            {!isAuthenticated ? (
+              <button 
+                onClick={() => loginWithRedirect()}
+                className="btn-primary text-sm sm:text-base"
+              >
+                Log In
+              </button>
+            ) : (
+              <button 
+                onClick={() => logout({ returnTo: window.location.origin })}
+                className="btn-secondary text-sm sm:text-base"
+              >
+                Log Out
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );
