@@ -13,9 +13,9 @@ import Toast from "./components/Toast";
 const App = () => {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col relative">
         <Navbar />
-        <main className="flex-1">
+        <main className="flex-1 relative z-10">
           <Routes>
             <Route path="/" element={<Authentication />} />
             <Route path="/page-one" element={<FirstQuestion />} />
