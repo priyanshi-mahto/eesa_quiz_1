@@ -14,8 +14,7 @@ const Authentication = () => {
   const storeUserInfo = async () => {
     try {
       const response = await axios.post(`${port}/Userinfo`, {
-        UserEmail: user.email,
-        UserName: user.name
+        UserEmail: user.email
       });
       console.log(response.data.message);
     } catch (error) {
