@@ -37,21 +37,22 @@ const Authentication = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user) {
       storeUserInfo();
     }
-  }, [isAuthenticated, navigate]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user]);
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4 py-12 animate-fade-in">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 animate-fade-in">
       <div className="card max-w-2xl w-full text-center animate-scale-in">
         <h1 className="text-3xl sm:text-4xl font-bold text-gradient mb-6">
           Welcome Adventurer!
@@ -67,9 +68,10 @@ const Authentication = () => {
         </button>
       </div>
 
+      {/* This is the Rules modal you provided */}
       {showRules && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-surface rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
+        <div className="fixed top-16 bottom-16 inset-x-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-surface rounded-2xl shadow-xl max-w-2xl w-full max-h-full overflow-y-auto animate-scale-in">
             <div className="p-6 sm:p-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-gradient mb-6 text-center">
                 Rules
@@ -95,7 +97,7 @@ const Authentication = () => {
                 <li className="flex items-start space-x-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold mt-0.5">3</span>
                   <span>
-                    All flags in the competition must follow the format: <code className="px-2 py-1 bg-surface-hover rounded font-mono text-sm">eesa{'{'} flag{'}'}</code>, (note that flag means answer)
+                    All flags in the competition must follow the format: <code className="px-2 py-1 bg-surface-hover rounded font-mono text-sm">eesa{'{'}flag{'}'}</code>, (note that flag means answer)
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
