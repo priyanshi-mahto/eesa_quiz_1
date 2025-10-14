@@ -146,80 +146,86 @@ function LastQuestion() {
 
   if (!question) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+      <div className="flex items-center justify-center min-h-screen">
         <Loader label="Loading question..." />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
-      {!showSuccess ? (
-        <>
-          <div className="card animate-scale-in">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <h1 className="text-2xl sm:text-3xl font-bold">
-                <span className="text-accent">5.</span> {question.Q_Title}
-              </h1>
-              <span className={isSolved5 ? "badge-success" : "badge-warning"}>
-                {isSolved5 ? "✓ Solved" : "Unsolved"}
-              </span>
+    // This new outer div centers everything on the page
+    <div className="min-h-screen flex items-center justify-center">
+    
+      {/* Your original content container */}
+      <div className="max-w-4xl w-full px-4 py-8 animate-fade-in">
+        {!showSuccess ? (
+          <>
+            <div className="card animate-scale-in">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h1 className="text-2xl sm:text-3xl font-bold">
+                  <span className="text-accent">5.</span> {question.Q_Title}
+                </h1>
+                <span className={isSolved5 ? "badge-success" : "badge-warning"}>
+                  {isSolved5 ? "✓ Solved" : "Unsolved"}
+                </span>
+              </div>
+              
+              <p className="text-text-secondary text-base sm:text-lg leading-relaxed mb-8">
+                {question.Q_Des}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  placeholder="Your answer"
+                  onChange={(e) => setSelectedOption(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
+                  className="input-field flex-1"
+                  aria-label="Your answer"
+                  disabled={isVerifying}
+                />
+                <button 
+                  onClick={handleVerify} 
+                  className="btn-primary sm:w-auto"
+                  disabled={isVerifying}
+                >
+                  {isVerifying ? <Loader label="" /> : 'Verify'}
+                </button>
+              </div>
             </div>
             
-            <p className="text-text-secondary text-base sm:text-lg leading-relaxed mb-8">
-              {question.Q_Des}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <input
-                type="text"
-                placeholder="Your answer"
-                onChange={(e) => setSelectedOption(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
-                className="input-field flex-1"
-                aria-label="Your answer"
-                disabled={isVerifying}
-              />
-              <button 
-                onClick={handleVerify} 
-                className="btn-primary sm:w-auto"
-                disabled={isVerifying}
-              >
-                {isVerifying ? <Loader label="" /> : 'Verify'}
+            <div className="flex justify-between gap-4 mt-6">
+              <button onClick={handlePrevious} className="btn-secondary">
+                ← Previous
+              </button>
+              <button onClick={handleSubmit} className="btn-primary">
+                Submit
               </button>
             </div>
+          </>
+        ) : (
+          <div className="card text-center animate-scale-in p-8 sm:p-12">
+            <div className="text-6xl mb-6">🎉</div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gradient mb-6">
+              Congratulations!
+            </h1>
+            <div className="space-y-4 text-text-secondary text-base sm:text-lg">
+              <p>
+                You have successfully completed <span className="font-bold text-primary">SignalCipher</span>—well done!
+              </p>
+              <p>
+                Thank you for participating and showcasing your skills. EESA wishes you a{" "}
+                <span className="font-semibold text-accent">Happy New Year!</span>
+              </p>
+              <p>
+                Stay tuned for further updates and information about prizes. We will be back soon with more exciting news! 😉
+              </p>
+              <p className="text-sm italic">Until next time, keep exploring and innovating...</p>
+            </div>
           </div>
-          
-          <div className="flex justify-between gap-4 mt-6">
-            <button onClick={handlePrevious} className="btn-secondary">
-              ← Previous
-            </button>
-            <button onClick={handleSubmit} className="btn-primary">
-              Submit
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="card text-center animate-scale-in p-8 sm:p-12">
-          <div className="text-6xl mb-6">🎉</div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-gradient mb-6">
-            Congratulations!
-          </h1>
-          <div className="space-y-4 text-text-secondary text-base sm:text-lg">
-            <p>
-              You have successfully completed <span className="font-bold text-primary">SignalCipher</span>—well done!
-            </p>
-            <p>
-              Thank you for participating and showcasing your skills. EESA wishes you a{" "}
-              <span className="font-semibold text-accent">Happy New Year!</span>
-            </p>
-            <p>
-              Stay tuned for further updates and information about prizes. We will be back soon with more exciting news! 😉
-            </p>
-            <p className="text-sm italic">Until next time, keep exploring and innovating...</p>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
+      
     </div>
   );
 }
