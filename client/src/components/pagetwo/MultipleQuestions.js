@@ -171,180 +171,182 @@ function MultipleQuestions() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-8 animate-fade-in">
-      <h1 className="text-3xl sm:text-4xl font-bold text-gradient text-center mb-8">
-        Answer the Questions
-      </h1>
+  // We add pt-24 (padding-top) and pb-16 (padding-bottom) here.
+  // You may need to adjust these numbers to perfectly fit your header/footer height.
+  <div className="max-w-5xl mx-auto px-4 py-8 space-y-8 animate-fade-in pt-24 pb-16">
+    <h1 className="text-3xl sm:text-4xl font-bold text-gradient text-center mb-8">
+      Answer the Questions
+    </h1>
 
-      {/* Question 2 */}
-      <div className="card animate-scale-in">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-2xl font-bold">
-            <span className="text-accent">2.</span> {questions[0]?.Q_Title}
-          </h2>
-          <span className={isSolved2 ? "badge-success" : "badge-warning"}>
-            {isSolved2 ? "✓ Solved" : "Not solved"}
-          </span>
-        </div>
-        
-        <p className="text-text-secondary mb-6">{questions[0]?.Q_Des}</p>
+    {/* Question 2 */}
+    <div className="card animate-scale-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl font-bold">
+          <span className="text-accent">2.</span> {questions[0]?.Q_Title}
+        </h2>
+        <span className={isSolved2 ? "badge-success" : "badge-warning"}>
+          {isSolved2 ? "✓ Solved" : "Not solved"}
+        </span>
+      </div>
+      
+      <p className="text-text-secondary mb-6">{questions[0]?.Q_Des}</p>
 
-        <div className="space-y-6 mb-6">
-          {[
-            { des: questions[0]?.A_Des, img: questions[0]?.A_Img, label: 'A' },
-            { des: questions[0]?.B_Des, img: questions[0]?.B_Img, label: 'B' },
-            { des: questions[0]?.C_Des, img: questions[0]?.C_Img, label: 'C' },
-            { des: questions[0]?.D_Des, img: questions[0]?.D_Img, label: 'D' },
-            { des: questions[0]?.E_Des, img: questions[0]?.E_Img, label: 'E' },
-          ].map((item, idx) => (
-            <div key={idx} className="flex flex-col lg:flex-row gap-4 p-4 bg-surface-hover rounded-lg">
-              <div className="flex-1">
-                <span className="font-semibold text-primary">{item.label}.</span> {item.des}
-              </div>
-              {item.img && (
-                <div className="lg:w-48 flex-shrink-0">
-                  <img src={item.img} alt={`Option ${item.label}`} className="w-full h-auto rounded" />
-                </div>
-              )}
+      <div className="space-y-6 mb-6">
+        {[
+          { des: questions[0]?.A_Des, img: questions[0]?.A_Img, label: 'A' },
+          { des: questions[0]?.B_Des, img: questions[0]?.B_Img, label: 'B' },
+          { des: questions[0]?.C_Des, img: questions[0]?.C_Img, label: 'C' },
+          { des: questions[0]?.D_Des, img: questions[0]?.D_Img, label: 'D' },
+          { des: questions[0]?.E_Des, img: questions[0]?.E_Img, label: 'E' },
+        ].map((item, idx) => (
+          <div key={idx} className="flex flex-col lg:flex-row gap-4 p-4 bg-surface-hover rounded-lg">
+            <div className="flex-1">
+              <span className="font-semibold text-primary">{item.label}.</span> {item.des}
             </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            placeholder="Your answer"
-            value={ans1}
-            onChange={(e) => setAns1(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleVerify(2, ans1)}
-            className="input-field flex-1"
-            disabled={verifying.q2}
-          />
-          <button
-            onClick={() => handleVerify(2, ans1)}
-            className="btn-primary sm:w-auto"
-            disabled={verifying.q2}
-          >
-            {verifying.q2 ? <Loader label="" /> : 'Verify'}
-          </button>
-        </div>
-      </div>
-
-      {/* Question 3 */}
-      <div className="card animate-scale-in">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-2xl font-bold">
-            <span className="text-accent">3.</span> {questions[1]?.Q_Title}
-          </h2>
-          <span className={isSolved3 ? "badge-success" : "badge-warning"}>
-            {isSolved3 ? "✓ Solved" : "Not solved"}
-          </span>
-        </div>
-        
-        <p className="text-text-secondary mb-6">{questions[1]?.Q_Des}</p>
-
-        <div className="flex flex-wrap gap-4 justify-center mb-6">
-          <a
-            href="https://drive.google.com/file/d/1bH58YIwupqK4rMcM0JThypm14_4RbVJ5/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-          >
-            🎵 Audio file
-          </a>
-          <a
-            href="https://drive.google.com/file/d/1pUEF6lFwlNMEUc6gzwCWkeLN2z0iNw7d/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-          >
-            🐍 Python file
-          </a>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            placeholder="Your answer"
-            value={ans2}
-            onChange={(e) => setAns2(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleVerify(3, ans2)}
-            className="input-field flex-1"
-            disabled={verifying.q3}
-          />
-          <button
-            onClick={() => handleVerify(3, ans2)}
-            className="btn-primary sm:w-auto"
-            disabled={verifying.q3}
-          >
-            {verifying.q3 ? <Loader label="" /> : 'Verify'}
-          </button>
-        </div>
-      </div>
-
-      {/* Question 4 */}
-      <div className="card animate-scale-in">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-2xl font-bold">
-            <span className="text-accent">4.</span> {questions[2]?.Q_Title}
-          </h2>
-          <span className={isSolved4 ? "badge-success" : "badge-warning"}>
-            {isSolved4 ? "✓ Solved" : "Not solved"}
-          </span>
-        </div>
-        
-        <p className="text-text-secondary mb-6">{questions[2]?.Q_Des}</p>
-
-        <div className="space-y-6 mb-6">
-          {[
-            { des: questions[2]?.A_Des, img: questions[2]?.A_Img, label: 'A' },
-            { des: questions[2]?.B_Des, img: questions[2]?.B_Img, label: 'B' },
-            { des: questions[2]?.C_Des, img: null, label: 'C' },
-          ].map((item, idx) => (
-            <div key={idx} className="flex flex-col lg:flex-row gap-4 p-4 bg-surface-hover rounded-lg">
-              <div className="flex-1">
-                <span className="font-semibold text-primary">{item.label}.</span> {item.des}
+            {item.img && (
+              <div className="lg:w-48 flex-shrink-0">
+                <img src={item.img} alt={`Option ${item.label}`} className="w-full h-auto rounded" />
               </div>
-              {item.img && (
-                <div className="lg:w-48 flex-shrink-0">
-                  <img src={item.img} alt={`Option ${item.label}`} className="w-full h-auto rounded" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            placeholder="Your answer"
-            value={ans3}
-            onChange={(e) => setAns3(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleVerify(4, ans3)}
-            className="input-field flex-1"
-            disabled={verifying.q4}
-          />
-          <button
-            onClick={() => handleVerify(4, ans3)}
-            className="btn-primary sm:w-auto"
-            disabled={verifying.q4}
-          >
-            {verifying.q4 ? <Loader label="" /> : 'Verify'}
-          </button>
-        </div>
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between gap-4 pt-4">
-        <button onClick={handlePrevious} className="btn-secondary">
-          ← Previous
-        </button>
-        <button onClick={handleNext} className="btn-primary">
-          Next →
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="text"
+          placeholder="Your answer"
+          value={ans1}
+          onChange={(e) => setAns1(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleVerify(2, ans1)}
+          className="input-field flex-1"
+          disabled={verifying.q2}
+        />
+        <button
+          onClick={() => handleVerify(2, ans1)}
+          className="btn-primary sm:w-auto"
+          disabled={verifying.q2}
+        >
+          {verifying.q2 ? <Loader label="" /> : 'Verify'}
         </button>
       </div>
     </div>
-  );
+
+    {/* Question 3 */}
+    <div className="card animate-scale-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl font-bold">
+          <span className="text-accent">3.</span> {questions[1]?.Q_Title}
+        </h2>
+        <span className={isSolved3 ? "badge-success" : "badge-warning"}>
+          {isSolved3 ? "✓ Solved" : "Not solved"}
+        </span>
+      </div>
+      
+      <p className="text-text-secondary mb-6">{questions[1]?.Q_Des}</p>
+
+      <div className="flex flex-wrap gap-4 justify-center mb-6">
+        <a
+          href="https://drive.google.com/file/d/1bH58YIwupqK4rMcM0JThypm14_4RbVJ5/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary"
+        >
+          🎵 Audio file
+        </a>
+        <a
+          href="https://drive.google.com/file/d/1pUEF6lFwlNMEUc6gzwCWkeLN2z0iNw7d/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary"
+        >
+          🐍 Python file
+        </a>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="text"
+          placeholder="Your answer"
+          value={ans2}
+          onChange={(e) => setAns2(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleVerify(3, ans2)}
+          className="input-field flex-1"
+          disabled={verifying.q3}
+        />
+        <button
+          onClick={() => handleVerify(3, ans2)}
+          className="btn-primary sm:w-auto"
+          disabled={verifying.q3}
+        >
+          {verifying.q3 ? <Loader label="" /> : 'Verify'}
+        </button>
+      </div>
+    </div>
+
+    {/* Question 4 */}
+    <div className="card animate-scale-in">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h2 className="text-2xl font-bold">
+          <span className="text-accent">4.</span> {questions[2]?.Q_Title}
+        </h2>
+        <span className={isSolved4 ? "badge-success" : "badge-warning"}>
+          {isSolved4 ? "✓ Solved" : "Not solved"}
+        </span>
+      </div>
+      
+      <p className="text-text-secondary mb-6">{questions[2]?.Q_Des}</p>
+
+      <div className="space-y-6 mb-6">
+        {[
+          { des: questions[2]?.A_Des, img: questions[2]?.A_Img, label: 'A' },
+          { des: questions[2]?.B_Des, img: questions[2]?.B_Img, label: 'B' },
+          { des: questions[2]?.C_Des, img: null, label: 'C' },
+        ].map((item, idx) => (
+          <div key={idx} className="flex flex-col lg:flex-row gap-4 p-4 bg-surface-hover rounded-lg">
+            <div className="flex-1">
+              <span className="font-semibold text-primary">{item.label}.</span> {item.des}
+            </div>
+            {item.img && (
+              <div className="lg:w-48 flex-shrink-0">
+                <img src={item.img} alt={`Option ${item.label}`} className="w-full h-auto rounded" />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="text"
+          placeholder="Your answer"
+          value={ans3}
+          onChange={(e) => setAns3(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleVerify(4, ans3)}
+          className="input-field flex-1"
+          disabled={verifying.q4}
+        />
+        <button
+          onClick={() => handleVerify(4, ans3)}
+          className="btn-primary sm:w-auto"
+          disabled={verifying.q4}
+        >
+          {verifying.q4 ? <Loader label="" /> : 'Verify'}
+        </button>
+      </div>
+    </div>
+
+    {/* Navigation */}
+    <div className="flex justify-between gap-4 pt-4">
+      <button onClick={handlePrevious} className="btn-secondary">
+        ← Previous
+      </button>
+      <button onClick={handleNext} className="btn-primary">
+        Next →
+      </button>
+    </div>
+  </div>
+);
 }
 
 export default MultipleQuestions;
