@@ -11,8 +11,8 @@ const Navbar = () => {
         fixed top-0 left-0 w-full z-50
         flex items-center justify-between
         h-16 px-8
-        bg-gray-950/60 backdrop-blur-lg
-        shadow-lg shadow-black/20
+        bg-surface/20 backdrop-blur-lg
+       
       "
     >
       {/* Left Side: Title */}

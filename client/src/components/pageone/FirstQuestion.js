@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { toast } from 'react-toastify';
-import Loader from "../Loader";
+import Loader from "../Loader";import { Clock, Trophy, CheckCircle, XCircle, Zap, Award, ChevronRight } from 'lucide-react';
 
 const port = "http://localhost:5000";
 
@@ -132,7 +132,7 @@ function FirstQuestion() {
     );
   }
 
-  return (
+ return (
     // This new outer div will center everything on the page
     <div className="min-h-screen flex items-center justify-center">
     
@@ -183,6 +183,7 @@ function FirstQuestion() {
 
     </div>
   );
+
 }
 
 export default FirstQuestion;

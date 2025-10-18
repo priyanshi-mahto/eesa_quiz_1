@@ -9,9 +9,11 @@ import LastQuestion from "./components/pagethree/LastQuestion";
 import UsersList from "./components/UsersList";
 import ProtectedRoute from "./components/authentication/ProtectedRoute";
 import Toast from "./components/Toast";
+import BackgroundLayout from "./components/Background";
 
 const App = () => {
   return (
+    <BackgroundLayout>
     <Router>
       <div className="min-h-screen flex flex-col relative">
         <Navbar />
@@ -31,6 +33,7 @@ const App = () => {
         <Toast />
       </div>
     </Router>
+    </BackgroundLayout>
   );
 };
 

@@ -11,6 +11,7 @@ const ProtectedRoute = ({ element }) => {
     "ee230002010@iiti.ac.in",
     "ee230002032@iiti.ac.in",
     "piyushraj07092005@gmail.com",
+    "priyanshimahto@gmail.com",
     "ankushraj2024@gmail.com",
     "ee240002010@gmail.com",
   ];

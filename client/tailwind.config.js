@@ -61,6 +61,9 @@ module.exports = {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        backgroundImage: {
+        'hero-gradient': 'linear-gradient(to bottom right, #0f0020, #2a004d)',
+      },
       },
     },
   },
