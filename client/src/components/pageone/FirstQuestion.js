@@ -132,7 +132,57 @@ function FirstQuestion() {
     );
   }
 
- 
+ return (
+    // This new outer div will center everything on the page
+    <div className="min-h-screen flex items-center justify-center">
+    
+      {/* This is your original container, now a child of the flex container */}
+      <div className="max-w-4xl w-full px-4 py-8 animate-fade-in">
+        <div className="card animate-scale-in">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              <span className="text-accent">1.</span> {question.Q_Title}
+            </h1>
+            <span className={isSolved ? "badge-success" : "badge-warning"}>
+              {isSolved ? "✓ Solved" : "Not solved"}
+            </span>
+          </div>
+
+          <p className="text-text-secondary text-base sm:text-lg leading-relaxed mb-8">
+            {question.Q_Des}
+          </p>
+
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                placeholder="Your answer"
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
+                className="input-field flex-1"
+                disabled={isVerifying}
+              />
+              <button 
+                onClick={handleVerify} 
+                className="btn-primary sm:w-auto disabled:opacity-50"
+                disabled={isVerifying}
+              >
+                {isVerifying ? <Loader label="" /> : 'Verify'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-6">
+          <button onClick={handleNext} className="btn-primary">
+            Next →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  );
 
 }
 
